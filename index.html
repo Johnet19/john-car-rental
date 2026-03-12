@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>John Car Rental | BYD e2 Car Hire in Addis Ababa </title>
+  <title>John Car Rental | BYD e2 Car Hire in Addis Ababa</title>
   <style>
     :root {
       --bg: #07111f;
@@ -615,7 +615,7 @@
         </div>
         <div class="feature-grid">
           <div class="feature-item">❄️ Air conditioning</div>
-          <div class="feature-item">📶 Free Wi‑Fi</div>
+          <div class="feature-item">📶 Free Wi-Fi</div>
           <div class="feature-item">🛡️ ABS, airbags, stability control</div>
           <div class="feature-item">📱 Bluetooth / USB infotainment</div>
           <div class="feature-item">🔇 Quiet electric comfort</div>
@@ -879,15 +879,13 @@
     © 2026 John Car Rental • Addis Ababa • BYD e2 Electric Car for Hire with Driver
   </footer>
 
-  const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
   <script>
+    const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const bookingStorageKey = 'john-car-rental-bookings-html';
-    const reviewStorageKey = 'john-car-rental-reviews-html';
 
     const defaultReviews = [
       {
@@ -956,33 +954,33 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       return '★'.repeat(count) + '☆'.repeat(5 - count);
     }
 
-   async function getReviews() {
-  const { data, error } = await supabase
-    .from('reviews')
-    .select('name, email, rating, trip, text, created_at')
-    .order('created_at', { ascending: false });
+    async function getReviews() {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('Error loading reviews:', error);
-    return defaultReviews;
-  }
+      if (error) {
+        console.error('Error loading reviews:', error);
+        return defaultReviews;
+      }
 
-  return data && data.length ? data : defaultReviews;
-}
+      return data && data.length ? data : defaultReviews;
+    }
 
-async function saveReview(review) {
-  const { error } = await supabase
-    .from('reviews')
-    .insert([review]);
+    async function saveReview(review) {
+      const { error } = await supabase
+        .from('reviews')
+        .insert([review]);
 
-  if (error) {
-    console.error('Error saving review:', error);
-    alert('Could not save review. Please try again.');
-    return false;
-  }
+      if (error) {
+        console.error('Error saving review:', error);
+        alert('Could not save review. Please try again.');
+        return false;
+      }
 
-  return true;
-}
+      return true;
+    }
 
     function getBookings() {
       const raw = localStorage.getItem(bookingStorageKey);
@@ -993,26 +991,25 @@ async function saveReview(review) {
       localStorage.setItem(bookingStorageKey, JSON.stringify(data));
     }
 
-async function renderReviews() {
-  const reviews = await getReviews();
-
-  reviewsList.innerHTML = reviews.map(r => `
-    <article class="review-card">
-      <div class="review-top">
-        <div style="display:flex; gap:12px; align-items:center;">
-          <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
-          <div>
-            <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
-            <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
+    async function renderReviews() {
+      const reviews = await getReviews();
+      reviewsList.innerHTML = reviews.map(r => `
+        <article class="review-card">
+          <div class="review-top">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
+                <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
+              </div>
+            </div>
+            <div class="stars">${stars(Number(r.rating))}</div>
           </div>
-        </div>
-        <div class="stars">${stars(Number(r.rating))}</div>
-      </div>
-      <div class="tag">${r.trip}</div>
-      <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
-    </article>
-  `).join('');
-}
+          <div class="tag">${r.trip}</div>
+          <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
+        </article>
+      `).join('');
+    }
 
     function renderCalendar() {
       const now = new Date();
@@ -1135,25 +1132,25 @@ async function renderReviews() {
       window.location.href = 'mailto:johnyalew22@gmail.com?subject=' + subject + '&body=' + body;
     });
 
-   reviewForm.addEventListener('submit', async function(e) {
-  e.preventDefault();
+    reviewForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-  const data = {
-    name: document.getElementById('reviewName').value.trim(),
-    email: document.getElementById('reviewEmail').value.trim(),
-    rating: Number(document.getElementById('reviewRating').value),
-    trip: document.getElementById('reviewTrip').value,
-    text: document.getElementById('reviewText').value.trim()
-  };
+      const data = {
+        name: document.getElementById('reviewName').value.trim(),
+        email: document.getElementById('reviewEmail').value.trim(),
+        rating: Number(document.getElementById('reviewRating').value),
+        trip: document.getElementById('reviewTrip').value,
+        text: document.getElementById('reviewText').value.trim()
+      };
 
-  const ok = await saveReview(data);
-  if (!ok) return;
+      const ok = await saveReview(data);
+      if (!ok) return;
 
-  await renderReviews();
-  reviewForm.reset();
-  reviewSuccess.classList.add('show');
-  setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
-});
+      await renderReviews();
+      reviewForm.reset();
+      reviewSuccess.classList.add('show');
+      setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
+    });
 
     [extraHoursSelect, tripTypeSelect, startDateInput, endDateInput].forEach(el => el.addEventListener('change', calculateTotal));
     calculateTotal();
@@ -1162,6 +1159,3 @@ async function renderReviews() {
   </script>
 </body>
 </html>
-
-
-
