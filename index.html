@@ -427,86 +427,94 @@
       margin-top: 12px;
     }
 
-    .calendar-shell {
-      background: white;
-      border: 1px solid #e7eff7;
-      box-shadow: 0 16px 36px rgba(14,30,53,0.08);
-      border-radius: 30px;
-      overflow: hidden;
-    }
-    .calendar-toolbar {
-      padding: 20px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #edf3f9;
-    }
-    .calendar-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: #0d1b2f;
-    }
-    .calendar-legend {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      color: #5b708c;
-      font-size: 14px;
-    }
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    .calendar-days, .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-    }
-    .calendar-days div {
-      padding: 14px;
-      text-align: center;
-      font-weight: 700;
-      color: #5d748f;
-      background: #f7fbff;
-      border-bottom: 1px solid #edf3f9;
-    }
-    .calendar-grid .cell {
-      min-height: 92px;
-      border-right: 1px solid #edf3f9;
-      border-bottom: 1px solid #edf3f9;
-      padding: 12px;
-      position: relative;
-      background: white;
-    }
-    .calendar-grid .cell:nth-child(7n) { border-right: none; }
-    .day-number {
-      font-weight: 800;
-      color: #0d1b2f;
-      font-size: 15px;
-    }
-    .cell.muted-cell { background: #fbfdff; }
-    .cell.booked-cell { background: #fff6f6; }
-    .cell.available-cell { background: #f7fffd; }
-    .status-pill {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-    }
-    .status-booked {
-      background: #ffe1e1;
-      color: #b33535;
-    }
-    .status-available {
-      background: #dbfbf2;
-      color: #0c816d;
-    }
+   .calendar-shell {
+  background: white;
+  border: 1px solid #e7eff7;
+  box-shadow: 0 10px 24px rgba(14,30,53,0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 760px;
+}
+
+.calendar-toolbar {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #edf3f9;
+}
+
+.calendar-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0d1b2f;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  color: #5b708c;
+  font-size: 13px;
+}
+
+.calendar-days, .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-days div {
+  padding: 10px;
+  text-align: center;
+  font-weight: 700;
+  color: #5d748f;
+  background: #f7fbff;
+  border-bottom: 1px solid #edf3f9;
+  font-size: 13px;
+}
+
+.calendar-grid .cell {
+  min-height: 64px;
+  border-right: 1px solid #edf3f9;
+  border-bottom: 1px solid #edf3f9;
+  padding: 8px;
+  position: relative;
+  background: white;
+}
+
+.calendar-grid .cell:nth-child(7n) {
+  border-right: none;
+}
+
+.day-number {
+  font-weight: 800;
+  color: #0d1b2f;
+  font-size: 13px;
+}
+
+.cell.muted-cell { background: #fbfdff; }
+.cell.booked-cell { background: #fff6f6; }
+.cell.available-cell { background: #f7fffd; }
+
+.status-pill {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.status-booked {
+  background: #ffe1e1;
+  color: #b33535;
+}
+
+.status-available {
+  background: #dbfbf2;
+  color: #0c816d;
+}
 
     .contact-band {
       background: linear-gradient(135deg, #0a1728, #0f2946);
@@ -880,282 +888,310 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<script>
+  const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const bookingStorageKey = 'john-car-rental-bookings-html';
+  const bookingStorageKey = 'john-car-rental-bookings-html';
 
-    const defaultReviews = [
-      {
-        name: 'Selam T.',
-        email: 'selam.t@example.com',
-        rating: 5,
-        trip: 'Airport Pickup',
-        text: 'Very clean car, professional driver, and smooth ride from Bole Airport. I would definitely book again.'
-      },
-      {
-        name: 'Daniel B.',
-        email: 'daniel.b@example.com',
-        rating: 5,
-        trip: 'Business Transfer',
-        text: 'Excellent for meetings around Addis Ababa. Quiet electric ride and very comfortable inside.'
-      },
-      {
-        name: 'Mimi K.',
-        email: 'mimi.k@example.com',
-        rating: 4,
-        trip: 'Multi-Day Hire',
-        text: 'Reliable and modern. Booking was easy and the car felt premium for daily city travel.'
-      }
-    ];
+  const defaultReviews = [
+    {
+      name: 'Selam T.',
+      email: 'selam.t@example.com',
+      rating: 5,
+      trip: 'Airport Pickup',
+      text: 'Very clean car, professional driver, and smooth ride from Bole Airport. I would definitely book again.'
+    },
+    {
+      name: 'Daniel B.',
+      email: 'daniel.b@example.com',
+      rating: 5,
+      trip: 'Business Transfer',
+      text: 'Excellent for meetings around Addis Ababa. Quiet electric ride and very comfortable inside.'
+    },
+    {
+      name: 'Mimi K.',
+      email: 'mimi.k@example.com',
+      rating: 4,
+      trip: 'Multi-Day Hire',
+      text: 'Reliable and modern. Booking was easy and the car felt premium for daily city travel.'
+    }
+  ];
 
-    const blockedDates = [
-      '2026-03-15', '2026-03-18', '2026-03-22', '2026-03-25', '2026-03-29'
-    ];
+  const blockedDates = ['2026-03-15', '2026-03-18', '2026-03-22'];
 
-    const bookingForm = document.getElementById('bookingForm');
-    const reviewForm = document.getElementById('reviewForm');
-    const bookingSuccess = document.getElementById('bookingSuccess');
-    const reviewSuccess = document.getElementById('reviewSuccess');
-    const extraHoursSelect = document.getElementById('extraHours');
-    const tripTypeSelect = document.getElementById('tripType');
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    const rateLabel = document.getElementById('rateLabel');
-    const daysLabel = document.getElementById('daysLabel');
-    const baseTotal = document.getElementById('baseTotal');
-    const extraTotal = document.getElementById('extraTotal');
-    const grandTotal = document.getElementById('grandTotal');
-    const calculationText = document.getElementById('calculationText');
-    const reviewsList = document.getElementById('reviewsList');
-    const calendarGrid = document.getElementById('calendarGrid');
-    const calendarTitle = document.getElementById('calendarTitle');
+  const bookingForm = document.getElementById('bookingForm');
+  const reviewForm = document.getElementById('reviewForm');
+  const bookingSuccess = document.getElementById('bookingSuccess');
+  const reviewSuccess = document.getElementById('reviewSuccess');
+  const extraHoursSelect = document.getElementById('extraHours');
+  const tripTypeSelect = document.getElementById('tripType');
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const rateLabel = document.getElementById('rateLabel');
+  const daysLabel = document.getElementById('daysLabel');
+  const baseTotal = document.getElementById('baseTotal');
+  const extraTotal = document.getElementById('extraTotal');
+  const grandTotal = document.getElementById('grandTotal');
+  const calculationText = document.getElementById('calculationText');
+  const reviewsList = document.getElementById('reviewsList');
+  const calendarGrid = document.getElementById('calendarGrid');
+  const calendarTitle = document.getElementById('calendarTitle');
 
-    const today = new Date();
-    const todayISO = today.toISOString().slice(0, 10);
-    startDateInput.value = todayISO;
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    endDateInput.value = tomorrow.toISOString().slice(0, 10);
-    startDateInput.min = todayISO;
-    endDateInput.min = todayISO;
+  const today = new Date();
+  const todayISO = today.toISOString().slice(0, 10);
+  startDateInput.value = todayISO;
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  endDateInput.value = tomorrow.toISOString().slice(0, 10);
+  startDateInput.min = todayISO;
+  endDateInput.min = todayISO;
 
-    function maskEmail(email) {
-      const parts = email.split('@');
-      if (parts.length !== 2) return email;
-      const name = parts[0];
-      const domain = parts[1];
-      return (name.slice(0, 2) || '') + '***@' + domain;
+  function maskEmail(email) {
+    const parts = email.split('@');
+    if (parts.length !== 2) return email;
+    const name = parts[0];
+    const domain = parts[1];
+    return (name.slice(0, 2) || '') + '***@' + domain;
+  }
+
+  function stars(count) {
+    return '★'.repeat(count) + '☆'.repeat(5 - count);
+  }
+
+  async function getReviews() {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('id,name,email,rating,trip,text,created_at')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error loading reviews:', error);
+      return defaultReviews;
     }
 
-    function stars(count) {
-      return '★'.repeat(count) + '☆'.repeat(5 - count);
+    return data && data.length ? data : defaultReviews;
+  }
+
+  async function saveReview(review) {
+    const { error } = await supabase
+      .from('reviews')
+      .insert([review]);
+
+    if (error) {
+      console.error('Error saving review:', error);
+      alert('Could not save review: ' + error.message);
+      return false;
     }
 
-    async function getReviews() {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .order('created_at', { ascending: false });
+    return true;
+  }
 
-      if (error) {
-        console.error('Error loading reviews:', error);
-        return defaultReviews;
-      }
+  function getBookings() {
+    const raw = localStorage.getItem(bookingStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  }
 
-      return data && data.length ? data : defaultReviews;
-    }
+  function saveBookings(data) {
+    localStorage.setItem(bookingStorageKey, JSON.stringify(data));
+  }
 
-    async function saveReview(review) {
-      const { error } = await supabase
-        .from('reviews')
-        .insert([review]);
-
-      if (error) {
-        console.error('Error saving review:', error);
-        alert('Could not save review. Please try again.');
-        return false;
-      }
-
-      return true;
-    }
-
-    function getBookings() {
-      const raw = localStorage.getItem(bookingStorageKey);
-      return raw ? JSON.parse(raw) : [];
-    }
-
-    function saveBookings(data) {
-      localStorage.setItem(bookingStorageKey, JSON.stringify(data));
-    }
-
-    async function renderReviews() {
-      const reviews = await getReviews();
-      reviewsList.innerHTML = reviews.map(r => `
-        <article class="review-card">
-          <div class="review-top">
-            <div style="display:flex; gap:12px; align-items:center;">
-              <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
-              <div>
-                <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
-                <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
-              </div>
+  async function renderReviews() {
+    const reviews = await getReviews();
+    reviewsList.innerHTML = reviews.map(r => `
+      <article class="review-card">
+        <div class="review-top">
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
+            <div>
+              <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
+              <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
             </div>
-            <div class="stars">${stars(Number(r.rating))}</div>
           </div>
-          <div class="tag">${r.trip}</div>
-          <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
-        </article>
-      `).join('');
+          <div class="stars">${stars(Number(r.rating))}</div>
+        </div>
+        <div class="tag">${r.trip}</div>
+        <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
+      </article>
+    `).join('');
+  }
+
+  function renderCalendar() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const startWeekday = firstDay.getDay();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+
+    calendarTitle.textContent = firstDay.toLocaleString('en-US', {
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const cells = [];
+
+    for (let i = 0; i < startWeekday; i++) {
+      cells.push(`<div class="cell muted-cell"></div>`);
     }
 
-    function renderCalendar() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      const firstDay = new Date(year, month, 1);
-      const startWeekday = firstDay.getDay();
-      const lastDay = new Date(year, month + 1, 0).getDate();
-      calendarTitle.textContent = firstDay.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    for (let day = 1; day <= lastDay; day++) {
+      const dateObj = new Date(year, month, day);
+      const dateIso = dateObj.toISOString().slice(0, 10);
+      const booked = blockedDates.includes(dateIso);
 
-      const cells = [];
-      for (let i = 0; i < startWeekday; i++) {
-        cells.push('<div class="cell muted-cell"></div>');
-      }
-
-      for (let day = 1; day <= lastDay; day++) {
-        const dateObj = new Date(year, month, day);
-        const dateIso = dateObj.toISOString().slice(0, 10);
-        const booked = blockedDates.includes(dateIso);
-        const cellClass = booked ? 'booked-cell' : 'available-cell';
-        const badgeClass = booked ? 'status-booked' : 'status-available';
-        const badgeText = booked ? 'Booked' : 'Available';
-        cells.push(`
-          <div class="cell ${cellClass}">
-            <div class="day-number">${day}</div>
-            <div class="status-pill ${badgeClass}">${badgeText}</div>
+      cells.push(`
+        <div class="cell ${booked ? 'booked-cell' : 'available-cell'}">
+          <div class="day-number">${day}</div>
+          <div class="status-pill ${booked ? 'status-booked' : 'status-available'}">
+            ${booked ? 'Booked' : 'Free'}
           </div>
-        `);
-      }
-
-      while (cells.length % 7 !== 0) {
-        cells.push('<div class="cell muted-cell"></div>');
-      }
-
-      calendarGrid.innerHTML = cells.join('');
+        </div>
+      `);
     }
 
-    function calculateDays() {
-      const start = new Date(startDateInput.value);
-      const end = new Date(endDateInput.value);
-      if (!startDateInput.value || !endDateInput.value || end < start) return 1;
-      const diff = end.getTime() - start.getTime();
-      return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+    while (cells.length % 7 !== 0) {
+      cells.push(`<div class="cell muted-cell"></div>`);
     }
 
-    function calculateTotal() {
-      const days = calculateDays();
-      const extraHours = Number(extraHoursSelect.value || 0);
-      const tripType = tripTypeSelect.value;
-      const rate = days > 10 ? 4000 : 4500;
-      const base = days * rate;
-      const overtime = tripType.includes('Airport') ? 0 : extraHours * 500;
-      const total = base + overtime;
+    calendarGrid.innerHTML = cells.join('');
+  }
 
-      rateLabel.textContent = rate.toLocaleString() + ' ETB';
-      daysLabel.textContent = days;
-      baseTotal.textContent = base.toLocaleString() + ' ETB';
-      extraTotal.textContent = overtime.toLocaleString() + ' ETB';
-      grandTotal.textContent = total.toLocaleString() + ' ETB';
-      calculationText.textContent = `Calculation: ${days} day(s) × ${rate.toLocaleString()} ETB + ${overtime.toLocaleString()} ETB = ${total.toLocaleString()} ETB`;
+  function calculateDays() {
+    const start = new Date(startDateInput.value);
+    const end = new Date(endDateInput.value);
+    if (!startDateInput.value || !endDateInput.value || end < start) return 1;
+    const diff = end.getTime() - start.getTime();
+    return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  }
+
+  function calculateTotal() {
+    const days = calculateDays();
+    const extraHours = Number(extraHoursSelect.value || 0);
+    const tripType = tripTypeSelect.value;
+    const rate = days > 10 ? 4000 : 4500;
+    const base = days * rate;
+    const overtime = tripType.includes('Airport') ? 0 : extraHours * 500;
+    const total = base + overtime;
+
+    rateLabel.textContent = rate.toLocaleString() + ' ETB';
+    daysLabel.textContent = days;
+    baseTotal.textContent = base.toLocaleString() + ' ETB';
+    extraTotal.textContent = overtime.toLocaleString() + ' ETB';
+    grandTotal.textContent = total.toLocaleString() + ' ETB';
+    calculationText.textContent =
+      `Calculation: ${days} day(s) × ${rate.toLocaleString()} ETB + ${overtime.toLocaleString()} ETB = ${total.toLocaleString()} ETB`;
+  }
+
+  function collectBookingData() {
+    return {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      tripType: document.getElementById('tripType').value,
+      startDate: startDateInput.value,
+      endDate: endDateInput.value,
+      pickupTime: document.getElementById('pickupTime').value,
+      pickup: document.getElementById('pickup').value.trim(),
+      dropoff: document.getElementById('dropoff').value.trim(),
+      extraHours: document.getElementById('extraHours').value,
+      note: document.getElementById('note').value.trim(),
+      days: calculateDays(),
+      total: grandTotal.textContent
+    };
+  }
+
+  function validateBookingData(data) {
+    if (!data.name || !data.phone || !data.startDate || !data.endDate || !data.pickup || !data.dropoff || !data.pickupTime) {
+      alert('Please fill in all required booking fields first.');
+      return false;
+    }
+    if (new Date(data.endDate) < new Date(data.startDate)) {
+      alert('End date must be the same day or later than the start date.');
+      return false;
+    }
+    return true;
+  }
+
+  function bookingMessage(data) {
+    return `New Booking Request
+
+Name: ${data.name}
+Phone: ${data.phone}
+Email: ${data.email}
+Trip Type: ${data.tripType}
+Booking Date From: ${data.startDate}
+Booking Date To: ${data.endDate}
+Total Days: ${data.days}
+Pickup Time: ${data.pickupTime}
+Pickup Location: ${data.pickup}
+Drop-off Location: ${data.dropoff}
+Extra Hours: ${data.extraHours}
+Special Request: ${data.note}
+Estimated Total: ${data.total}`;
+  }
+
+  bookingForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const data = collectBookingData();
+    if (!validateBookingData(data)) return;
+    const bookings = getBookings();
+    bookings.unshift({ ...data, id: Date.now() });
+    saveBookings(bookings);
+    bookingSuccess.classList.add('show');
+    setTimeout(() => bookingSuccess.classList.remove('show'), 4000);
+  });
+
+  document.getElementById('sendWhatsApp').addEventListener('click', function() {
+    const data = collectBookingData();
+    if (!validateBookingData(data)) return;
+    const whatsappUrl = 'https://wa.me/251922864137?text=' + encodeURIComponent(bookingMessage(data));
+    window.open(whatsappUrl, '_blank');
+  });
+
+  document.getElementById('sendEmail').addEventListener('click', function() {
+    const data = collectBookingData();
+    if (!validateBookingData(data)) return;
+    const subject = encodeURIComponent('New Booking Request - John Car Rental');
+    const body = encodeURIComponent(bookingMessage(data));
+    window.location.href = 'mailto:johnyalew22@gmail.com?subject=' + subject + '&body=' + body;
+  });
+
+  reviewForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const data = {
+      name: document.getElementById('reviewName').value.trim(),
+      email: document.getElementById('reviewEmail').value.trim(),
+      rating: Number(document.getElementById('reviewRating').value),
+      trip: document.getElementById('reviewTrip').value,
+      text: document.getElementById('reviewText').value.trim()
+    };
+
+    if (!data.name || !data.email || !data.text) {
+      alert('Please fill in all review fields.');
+      return;
     }
 
-    function collectBookingData() {
-      return {
-        name: document.getElementById('name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        tripType: document.getElementById('tripType').value,
-        startDate: startDateInput.value,
-        endDate: endDateInput.value,
-        pickupTime: document.getElementById('pickupTime').value,
-        pickup: document.getElementById('pickup').value.trim(),
-        dropoff: document.getElementById('dropoff').value.trim(),
-        extraHours: document.getElementById('extraHours').value,
-        note: document.getElementById('note').value.trim(),
-        days: calculateDays(),
-        total: grandTotal.textContent
-      };
-    }
+    const ok = await saveReview(data);
+    if (!ok) return;
 
-    function validateBookingData(data) {
-      if (!data.name || !data.phone || !data.startDate || !data.endDate || !data.pickup || !data.dropoff || !data.pickupTime) {
-        alert('Please fill in all required booking fields first.');
-        return false;
-      }
-      if (new Date(data.endDate) < new Date(data.startDate)) {
-        alert('End date must be the same day or later than the start date.');
-        return false;
-      }
-      return true;
-    }
+    await renderReviews();
+    reviewForm.reset();
+    reviewSuccess.classList.add('show');
+    setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
+  });
 
-    function bookingMessage(data) {
-      return `New Booking Request\n\nName: ${data.name}\nPhone: ${data.phone}\nEmail: ${data.email}\nTrip Type: ${data.tripType}\nBooking Date From: ${data.startDate}\nBooking Date To: ${data.endDate}\nTotal Days: ${data.days}\nPickup Time: ${data.pickupTime}\nPickup Location: ${data.pickup}\nDrop-off Location: ${data.dropoff}\nExtra Hours: ${data.extraHours}\nSpecial Request: ${data.note}\nEstimated Total: ${data.total}`;
-    }
+  [extraHoursSelect, tripTypeSelect, startDateInput, endDateInput].forEach(el =>
+    el.addEventListener('change', calculateTotal)
+  );
 
-    bookingForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const data = collectBookingData();
-      if (!validateBookingData(data)) return;
-      const bookings = getBookings();
-      bookings.unshift({ ...data, id: Date.now() });
-      saveBookings(bookings);
-      bookingSuccess.classList.add('show');
-      setTimeout(() => bookingSuccess.classList.remove('show'), 4000);
-    });
-
-    document.getElementById('sendWhatsApp').addEventListener('click', function() {
-      const data = collectBookingData();
-      if (!validateBookingData(data)) return;
-      const whatsappUrl = 'https://wa.me/251922864137?text=' + encodeURIComponent(bookingMessage(data));
-      window.open(whatsappUrl, '_blank');
-    });
-
-    document.getElementById('sendEmail').addEventListener('click', function() {
-      const data = collectBookingData();
-      if (!validateBookingData(data)) return;
-      const subject = encodeURIComponent('New Booking Request - John Car Rental');
-      const body = encodeURIComponent(bookingMessage(data));
-      window.location.href = 'mailto:johnyalew22@gmail.com?subject=' + subject + '&body=' + body;
-    });
-
-    reviewForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const data = {
-        name: document.getElementById('reviewName').value.trim(),
-        email: document.getElementById('reviewEmail').value.trim(),
-        rating: Number(document.getElementById('reviewRating').value),
-        trip: document.getElementById('reviewTrip').value,
-        text: document.getElementById('reviewText').value.trim()
-      };
-
-      const ok = await saveReview(data);
-      if (!ok) return;
-
-      await renderReviews();
-      reviewForm.reset();
-      reviewSuccess.classList.add('show');
-      setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
-    });
-
-    [extraHoursSelect, tripTypeSelect, startDateInput, endDateInput].forEach(el => el.addEventListener('change', calculateTotal));
-    calculateTotal();
-    renderReviews();
-    renderCalendar();
-  </script>
+  calculateTotal();
+  renderReviews();
+  renderCalendar();
+</script>
 </body>
 </html>
+
