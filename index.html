@@ -887,11 +887,12 @@
     © 2026 John Car Rental • Addis Ababa • BYD e2 Electric Car for Hire with Driver
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 
   const bookingStorageKey = 'john-car-rental-bookings-html';
 
@@ -961,7 +962,7 @@
   }
 
   async function getReviews() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('reviews')
       .select('id,name,email,rating,trip,text,created_at')
       .order('created_at', { ascending: false });
@@ -975,7 +976,7 @@
   }
 
   async function saveReview(review) {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from('reviews')
       .insert([review]);
 
@@ -1194,4 +1195,5 @@ Estimated Total: ${data.total}`;
 </script>
 </body>
 </html>
+
 
