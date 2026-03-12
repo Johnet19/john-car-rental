@@ -883,241 +883,245 @@
     </div>
   </section>
 
-  <footer>
+   <footer>
     © 2026 John Car Rental • Addis Ababa • BYD e2 Electric Car for Hire with Driver
   </footer>
 
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://xdqsbxrzfhiqztcypaiz.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_eWL28XdKP9ACcFa8sibe3Q_Dc1MA5U1';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const bookingStorageKey = 'john-car-rental-bookings-html';
+    const bookingStorageKey = 'john-car-rental-bookings-html';
 
-  const defaultReviews = [
-    {
-      name: 'Selam T.',
-      email: 'selam.t@example.com',
-      rating: 5,
-      trip: 'Airport Pickup',
-      text: 'Very clean car, professional driver, and smooth ride from Bole Airport. I would definitely book again.'
-    },
-    {
-      name: 'Daniel B.',
-      email: 'daniel.b@example.com',
-      rating: 5,
-      trip: 'Business Transfer',
-      text: 'Excellent for meetings around Addis Ababa. Quiet electric ride and very comfortable inside.'
-    },
-    {
-      name: 'Mimi K.',
-      email: 'mimi.k@example.com',
-      rating: 4,
-      trip: 'Multi-Day Hire',
-      text: 'Reliable and modern. Booking was easy and the car felt premium for daily city travel.'
-    }
-  ];
+    const defaultReviews = [
+      {
+        name: 'Selam T.',
+        email: 'selam.t@example.com',
+        rating: 5,
+        trip: 'Airport Pickup',
+        text: 'Very clean car, professional driver, and smooth ride from Bole Airport. I would definitely book again.'
+      },
+      {
+        name: 'Daniel B.',
+        email: 'daniel.b@example.com',
+        rating: 5,
+        trip: 'Business Transfer',
+        text: 'Excellent for meetings around Addis Ababa. Quiet electric ride and very comfortable inside.'
+      },
+      {
+        name: 'Mimi K.',
+        email: 'mimi.k@example.com',
+        rating: 4,
+        trip: 'Multi-Day Hire',
+        text: 'Reliable and modern. Booking was easy and the car felt premium for daily city travel.'
+      }
+    ];
 
-  const blockedDates = ['2026-03-15', '2026-03-18', '2026-03-22'];
+    const blockedDates = [
+      '2026-03-05',
+      '2026-03-09',
+      '2026-03-14',
+      '2026-03-18',
+      '2026-03-23'
+    ];
 
-  const bookingForm = document.getElementById('bookingForm');
-  const reviewForm = document.getElementById('reviewForm');
-  const bookingSuccess = document.getElementById('bookingSuccess');
-  const reviewSuccess = document.getElementById('reviewSuccess');
-  const extraHoursSelect = document.getElementById('extraHours');
-  const tripTypeSelect = document.getElementById('tripType');
-  const startDateInput = document.getElementById('startDate');
-  const endDateInput = document.getElementById('endDate');
-  const rateLabel = document.getElementById('rateLabel');
-  const daysLabel = document.getElementById('daysLabel');
-  const baseTotal = document.getElementById('baseTotal');
-  const extraTotal = document.getElementById('extraTotal');
-  const grandTotal = document.getElementById('grandTotal');
-  const calculationText = document.getElementById('calculationText');
-  const reviewsList = document.getElementById('reviewsList');
-  const calendarGrid = document.getElementById('calendarGrid');
-  const calendarTitle = document.getElementById('calendarTitle');
+    const bookingForm = document.getElementById('bookingForm');
+    const reviewForm = document.getElementById('reviewForm');
+    const bookingSuccess = document.getElementById('bookingSuccess');
+    const reviewSuccess = document.getElementById('reviewSuccess');
+    const extraHoursSelect = document.getElementById('extraHours');
+    const tripTypeSelect = document.getElementById('tripType');
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const rateLabel = document.getElementById('rateLabel');
+    const daysLabel = document.getElementById('daysLabel');
+    const baseTotal = document.getElementById('baseTotal');
+    const extraTotal = document.getElementById('extraTotal');
+    const grandTotal = document.getElementById('grandTotal');
+    const calculationText = document.getElementById('calculationText');
+    const reviewsList = document.getElementById('reviewsList');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const calendarTitle = document.getElementById('calendarTitle');
 
-  const today = new Date();
-  const todayISO = today.toISOString().slice(0, 10);
-  startDateInput.value = todayISO;
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  endDateInput.value = tomorrow.toISOString().slice(0, 10);
-  startDateInput.min = todayISO;
-  endDateInput.min = todayISO;
+    const today = new Date();
+    const todayISO = today.toISOString().slice(0, 10);
+    startDateInput.value = todayISO;
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    endDateInput.value = tomorrow.toISOString().slice(0, 10);
+    startDateInput.min = todayISO;
+    endDateInput.min = todayISO;
 
-  function maskEmail(email) {
-    const parts = email.split('@');
-    if (parts.length !== 2) return email;
-    const name = parts[0];
-    const domain = parts[1];
-    return (name.slice(0, 2) || '') + '***@' + domain;
-  }
-
-  function stars(count) {
-    return '★'.repeat(count) + '☆'.repeat(5 - count);
-  }
-
-  async function getReviews() {
-    const { data, error } = await supabaseClient
-      .from('reviews')
-      .select('id,name,email,rating,trip,text,created_at')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error loading reviews:', error);
-      return defaultReviews;
+    function maskEmail(email) {
+      const parts = email.split('@');
+      if (parts.length !== 2) return email;
+      return (parts[0].slice(0, 2) || '') + '***@' + parts[1];
     }
 
-    return data && data.length ? data : defaultReviews;
-  }
-
-  async function saveReview(review) {
-    const { error } = await supabaseClient
-      .from('reviews')
-      .insert([review]);
-
-    if (error) {
-      console.error('Error saving review:', error);
-      alert('Could not save review: ' + error.message);
-      return false;
+    function stars(count) {
+      return '★'.repeat(count) + '☆'.repeat(5 - count);
     }
 
-    return true;
-  }
+    async function getReviews() {
+      const { data, error } = await supabaseClient
+        .from('reviews')
+        .select('id,name,email,rating,trip,text,created_at')
+        .order('created_at', { ascending: false });
 
-  function getBookings() {
-    const raw = localStorage.getItem(bookingStorageKey);
-    return raw ? JSON.parse(raw) : [];
-  }
+      if (error) {
+        console.error('Error loading reviews:', error);
+        return defaultReviews;
+      }
 
-  function saveBookings(data) {
-    localStorage.setItem(bookingStorageKey, JSON.stringify(data));
-  }
+      return data && data.length ? data : defaultReviews;
+    }
 
-  async function renderReviews() {
-    const reviews = await getReviews();
-    reviewsList.innerHTML = reviews.map(r => `
-      <article class="review-card">
-        <div class="review-top">
-          <div style="display:flex; gap:12px; align-items:center;">
-            <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
-            <div>
-              <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
-              <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
+    async function saveReview(review) {
+      const { error } = await supabaseClient
+        .from('reviews')
+        .insert([review]);
+
+      if (error) {
+        console.error('Error saving review:', error);
+        alert('Could not save review: ' + error.message);
+        return false;
+      }
+
+      return true;
+    }
+
+    function getBookings() {
+      const raw = localStorage.getItem(bookingStorageKey);
+      return raw ? JSON.parse(raw) : [];
+    }
+
+    function saveBookings(data) {
+      localStorage.setItem(bookingStorageKey, JSON.stringify(data));
+    }
+
+    async function renderReviews() {
+      const reviews = await getReviews();
+
+      reviewsList.innerHTML = reviews.map(r => `
+        <article class="review-card">
+          <div class="review-top">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
+                <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
+              </div>
+            </div>
+            <div class="stars">${stars(Number(r.rating))}</div>
+          </div>
+          <div class="tag">${r.trip}</div>
+          <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderCalendar() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+
+      const firstDay = new Date(year, month, 1);
+      const startWeekday = firstDay.getDay();
+      const lastDay = new Date(year, month + 1, 0).getDate();
+
+      calendarTitle.textContent = firstDay.toLocaleString('en-US', {
+        month: 'long',
+        year: 'numeric'
+      });
+
+      const cells = [];
+
+      for (let i = 0; i < startWeekday; i++) {
+        cells.push('<div class="cell muted-cell"></div>');
+      }
+
+      for (let day = 1; day <= lastDay; day++) {
+        const dateObj = new Date(year, month, day);
+        const dateIso = dateObj.toISOString().slice(0, 10);
+        const booked = blockedDates.includes(dateIso);
+
+        cells.push(`
+          <div class="cell ${booked ? 'booked-cell' : 'available-cell'}">
+            <div class="day-number">${day}</div>
+            <div class="status-pill ${booked ? 'status-booked' : 'status-available'}">
+              ${booked ? 'Booked' : 'Free'}
             </div>
           </div>
-          <div class="stars">${stars(Number(r.rating))}</div>
-        </div>
-        <div class="tag">${r.trip}</div>
-        <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
-      </article>
-    `).join('');
-  }
+        `);
+      }
 
-  function renderCalendar() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
+      while (cells.length % 7 !== 0) {
+        cells.push('<div class="cell muted-cell"></div>');
+      }
 
-    const firstDay = new Date(year, month, 1);
-    const startWeekday = firstDay.getDay();
-    const lastDay = new Date(year, month + 1, 0).getDate();
-
-    calendarTitle.textContent = firstDay.toLocaleString('en-US', {
-      month: 'long',
-      year: 'numeric'
-    });
-
-    const cells = [];
-
-    for (let i = 0; i < startWeekday; i++) {
-      cells.push(`<div class="cell muted-cell"></div>`);
+      calendarGrid.innerHTML = cells.join('');
     }
 
-    for (let day = 1; day <= lastDay; day++) {
-      const dateObj = new Date(year, month, day);
-      const dateIso = dateObj.toISOString().slice(0, 10);
-      const booked = blockedDates.includes(dateIso);
-
-      cells.push(`
-        <div class="cell ${booked ? 'booked-cell' : 'available-cell'}">
-          <div class="day-number">${day}</div>
-          <div class="status-pill ${booked ? 'status-booked' : 'status-available'}">
-            ${booked ? 'Booked' : 'Free'}
-          </div>
-        </div>
-      `);
+    function calculateDays() {
+      const start = new Date(startDateInput.value);
+      const end = new Date(endDateInput.value);
+      if (!startDateInput.value || !endDateInput.value || end < start) return 1;
+      const diff = end.getTime() - start.getTime();
+      return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
     }
 
-    while (cells.length % 7 !== 0) {
-      cells.push(`<div class="cell muted-cell"></div>`);
+    function calculateTotal() {
+      const days = calculateDays();
+      const extraHours = Number(extraHoursSelect.value || 0);
+      const tripType = tripTypeSelect.value;
+      const rate = days > 10 ? 4000 : 4500;
+      const base = days * rate;
+      const overtime = tripType.includes('Airport') ? 0 : extraHours * 500;
+      const total = base + overtime;
+
+      rateLabel.textContent = rate.toLocaleString() + ' ETB';
+      daysLabel.textContent = days;
+      baseTotal.textContent = base.toLocaleString() + ' ETB';
+      extraTotal.textContent = overtime.toLocaleString() + ' ETB';
+      grandTotal.textContent = total.toLocaleString() + ' ETB';
+      calculationText.textContent =
+        `Calculation: ${days} day(s) × ${rate.toLocaleString()} ETB + ${overtime.toLocaleString()} ETB = ${total.toLocaleString()} ETB`;
     }
 
-    calendarGrid.innerHTML = cells.join('');
-  }
-
-  function calculateDays() {
-    const start = new Date(startDateInput.value);
-    const end = new Date(endDateInput.value);
-    if (!startDateInput.value || !endDateInput.value || end < start) return 1;
-    const diff = end.getTime() - start.getTime();
-    return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-  }
-
-  function calculateTotal() {
-    const days = calculateDays();
-    const extraHours = Number(extraHoursSelect.value || 0);
-    const tripType = tripTypeSelect.value;
-    const rate = days > 10 ? 4000 : 4500;
-    const base = days * rate;
-    const overtime = tripType.includes('Airport') ? 0 : extraHours * 500;
-    const total = base + overtime;
-
-    rateLabel.textContent = rate.toLocaleString() + ' ETB';
-    daysLabel.textContent = days;
-    baseTotal.textContent = base.toLocaleString() + ' ETB';
-    extraTotal.textContent = overtime.toLocaleString() + ' ETB';
-    grandTotal.textContent = total.toLocaleString() + ' ETB';
-    calculationText.textContent =
-      `Calculation: ${days} day(s) × ${rate.toLocaleString()} ETB + ${overtime.toLocaleString()} ETB = ${total.toLocaleString()} ETB`;
-  }
-
-  function collectBookingData() {
-    return {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      tripType: document.getElementById('tripType').value,
-      startDate: startDateInput.value,
-      endDate: endDateInput.value,
-      pickupTime: document.getElementById('pickupTime').value,
-      pickup: document.getElementById('pickup').value.trim(),
-      dropoff: document.getElementById('dropoff').value.trim(),
-      extraHours: document.getElementById('extraHours').value,
-      note: document.getElementById('note').value.trim(),
-      days: calculateDays(),
-      total: grandTotal.textContent
-    };
-  }
-
-  function validateBookingData(data) {
-    if (!data.name || !data.phone || !data.startDate || !data.endDate || !data.pickup || !data.dropoff || !data.pickupTime) {
-      alert('Please fill in all required booking fields first.');
-      return false;
+    function collectBookingData() {
+      return {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        tripType: document.getElementById('tripType').value,
+        startDate: startDateInput.value,
+        endDate: endDateInput.value,
+        pickupTime: document.getElementById('pickupTime').value,
+        pickup: document.getElementById('pickup').value.trim(),
+        dropoff: document.getElementById('dropoff').value.trim(),
+        extraHours: document.getElementById('extraHours').value,
+        note: document.getElementById('note').value.trim(),
+        days: calculateDays(),
+        total: grandTotal.textContent
+      };
     }
-    if (new Date(data.endDate) < new Date(data.startDate)) {
-      alert('End date must be the same day or later than the start date.');
-      return false;
-    }
-    return true;
-  }
 
-  function bookingMessage(data) {
-    return `New Booking Request
+    function validateBookingData(data) {
+      if (!data.name || !data.phone || !data.startDate || !data.endDate || !data.pickup || !data.dropoff || !data.pickupTime) {
+        alert('Please fill in all required booking fields first.');
+        return false;
+      }
+      if (new Date(data.endDate) < new Date(data.startDate)) {
+        alert('End date must be the same day or later than the start date.');
+        return false;
+      }
+      return true;
+    }
+
+    function bookingMessage(data) {
+      return `New Booking Request
 
 Name: ${data.name}
 Phone: ${data.phone}
@@ -1132,68 +1136,66 @@ Drop-off Location: ${data.dropoff}
 Extra Hours: ${data.extraHours}
 Special Request: ${data.note}
 Estimated Total: ${data.total}`;
-  }
-
-  bookingForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const data = collectBookingData();
-    if (!validateBookingData(data)) return;
-    const bookings = getBookings();
-    bookings.unshift({ ...data, id: Date.now() });
-    saveBookings(bookings);
-    bookingSuccess.classList.add('show');
-    setTimeout(() => bookingSuccess.classList.remove('show'), 4000);
-  });
-
-  document.getElementById('sendWhatsApp').addEventListener('click', function() {
-    const data = collectBookingData();
-    if (!validateBookingData(data)) return;
-    const whatsappUrl = 'https://wa.me/251922864137?text=' + encodeURIComponent(bookingMessage(data));
-    window.open(whatsappUrl, '_blank');
-  });
-
-  document.getElementById('sendEmail').addEventListener('click', function() {
-    const data = collectBookingData();
-    if (!validateBookingData(data)) return;
-    const subject = encodeURIComponent('New Booking Request - John Car Rental');
-    const body = encodeURIComponent(bookingMessage(data));
-    window.location.href = 'mailto:johnyalew22@gmail.com?subject=' + subject + '&body=' + body;
-  });
-
-  reviewForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const data = {
-      name: document.getElementById('reviewName').value.trim(),
-      email: document.getElementById('reviewEmail').value.trim(),
-      rating: Number(document.getElementById('reviewRating').value),
-      trip: document.getElementById('reviewTrip').value,
-      text: document.getElementById('reviewText').value.trim()
-    };
-
-    if (!data.name || !data.email || !data.text) {
-      alert('Please fill in all review fields.');
-      return;
     }
 
-    const ok = await saveReview(data);
-    if (!ok) return;
+    bookingForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = collectBookingData();
+      if (!validateBookingData(data)) return;
+      const bookings = getBookings();
+      bookings.unshift({ ...data, id: Date.now() });
+      saveBookings(bookings);
+      bookingSuccess.classList.add('show');
+      setTimeout(() => bookingSuccess.classList.remove('show'), 4000);
+    });
 
-    await renderReviews();
-    reviewForm.reset();
-    reviewSuccess.classList.add('show');
-    setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
-  });
+    document.getElementById('sendWhatsApp').addEventListener('click', function() {
+      const data = collectBookingData();
+      if (!validateBookingData(data)) return;
+      const whatsappUrl = 'https://wa.me/251922864137?text=' + encodeURIComponent(bookingMessage(data));
+      window.open(whatsappUrl, '_blank');
+    });
 
-  [extraHoursSelect, tripTypeSelect, startDateInput, endDateInput].forEach(el =>
-    el.addEventListener('change', calculateTotal)
-  );
+    document.getElementById('sendEmail').addEventListener('click', function() {
+      const data = collectBookingData();
+      if (!validateBookingData(data)) return;
+      const subject = encodeURIComponent('New Booking Request - John Car Rental');
+      const body = encodeURIComponent(bookingMessage(data));
+      window.location.href = 'mailto:johnyalew22@gmail.com?subject=' + subject + '&body=' + body;
+    });
 
-  calculateTotal();
-  renderReviews();
-  renderCalendar();
-</script>
+    reviewForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('reviewName').value.trim(),
+        email: document.getElementById('reviewEmail').value.trim(),
+        rating: Number(document.getElementById('reviewRating').value),
+        trip: document.getElementById('reviewTrip').value,
+        text: document.getElementById('reviewText').value.trim()
+      };
+
+      if (!data.name || !data.email || !data.text) {
+        alert('Please fill in all review fields.');
+        return;
+      }
+
+      const ok = await saveReview(data);
+      if (!ok) return;
+
+      await renderReviews();
+      reviewForm.reset();
+      reviewSuccess.classList.add('show');
+      setTimeout(() => reviewSuccess.classList.remove('show'), 4000);
+    });
+
+    [extraHoursSelect, tripTypeSelect, startDateInput, endDateInput].forEach(el =>
+      el.addEventListener('change', calculateTotal)
+    );
+
+    calculateTotal();
+    renderReviews();
+    renderCalendar();
+  </script>
 </body>
 </html>
-
-
