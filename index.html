@@ -805,7 +805,25 @@
         <a href="#leave-review" class="btn btn-primary">Leave a Review</a>
       </div>
 
-      <div class="review-grid" id="reviewsList"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; margin-top:20px;">
+  
+  <div style="display:flex; align-items:center; gap:16px; padding:14px 18px; border:1px solid #e5e7eb; border-radius:16px; background:#fff; box-shadow:0 4px 16px rgba(0,0,0,0.06)">
+    
+    <div style="font-size:32px; font-weight:700;" id="avgRating">0.0</div>
+    
+    <div>
+      <div style="color:#f59e0b; font-size:18px; letter-spacing:2px;" id="avgStars">☆☆☆☆☆</div>
+      <small style="color:#666;" id="reviewCount">0 reviews</small>
+    </div>
+  
+  </div>
+
+</div>
+
+<div style="margin-top:20px;">
+  <div id="reviewsList" style="display:flex; overflow-x:auto; gap:18px; padding:10px 0;">
+  </div>
+</div>
     </div>
   </section>
 
@@ -994,26 +1012,47 @@
       localStorage.setItem(bookingStorageKey, JSON.stringify(data));
     }
 
-    async function renderReviews() {
-      const reviews = await getReviews();
+   async function renderReviews() {
+  const reviews = await getReviews();
 
-      reviewsList.innerHTML = reviews.map(r => `
-        <article class="review-card">
-          <div class="review-top">
-            <div style="display:flex; gap:12px; align-items:center;">
-              <div class="avatar">${r.name.charAt(0).toUpperCase()}</div>
-              <div>
-                <div style="font-weight:800; color:#0d1b2f;">${r.name}</div>
-                <div style="font-size:13px; color:#69809b;">${maskEmail(r.email)}</div>
-              </div>
-            </div>
-            <div class="stars">${stars(Number(r.rating))}</div>
-          </div>
-          <div class="tag">${r.trip}</div>
-          <p style="margin:16px 0 0; color:#566880; line-height:1.75;">${r.text}</p>
-        </article>
-      `).join('');
-    }
+  if (!reviews.length) return;
+
+  // Average rating
+  const avg = reviews.reduce((a,b)=>a+Number(b.rating),0) / reviews.length;
+  document.getElementById("avgRating").innerText = avg.toFixed(1);
+  document.getElementById("avgStars").innerText =
+    "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg));
+  document.getElementById("reviewCount").innerText =
+    reviews.length + " review" + (reviews.length>1?"s":"");
+
+  // Cards
+  reviewsList.innerHTML = reviews.map(r => `
+    <div style="
+      min-width:300px;
+      border:1px solid #e5e7eb;
+      border-radius:18px;
+      padding:16px;
+      background:#fff;
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    ">
+      <div style="display:flex; justify-content:space-between;">
+        <div>
+          <strong>${r.name}</strong><br/>
+          <small>${maskEmail(r.email)}</small>
+        </div>
+        <div style="font-size:12px; background:#ecfdf5; padding:4px 8px; border-radius:999px; color:#047857;">
+          Verified
+        </div>
+      </div>
+
+      <div style="color:#f59e0b; margin-top:8px;">
+        ${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}
+      </div>
+
+      <p style="margin-top:10px;">${r.text}</p>
+    </div>
+  `).join("");
+}
 
     function renderCalendar() {
       const now = new Date();
